@@ -57,6 +57,9 @@ class AsyncPaginate extends Component {
     SelectComponent: SelectBase,
     components: {},
 
+    onMenuOpen: null,
+    onMenuClose: null,
+
     cacheUniq: null,
 
     selectRef: () => { },
@@ -111,25 +114,21 @@ class AsyncPaginate extends Component {
   }
 
   onMenuClose = () => {
-    const {
-      onMenuClose,
-    } = this.props;
-
     this.setState({
       search: '',
       menuIsOpen: false,
     });
 
+    const {
+      onMenuClose,
+    } = this.props;
+
     if (onMenuClose) {
-      onMenuClose.call(this);
+      onMenuClose();
     }
   }
 
   onMenuOpen = async () => {
-    const {
-      onMenuOpen,
-    } = this.props;
-
     await this.setState({
       menuIsOpen: true,
     });
@@ -142,8 +141,12 @@ class AsyncPaginate extends Component {
       await this.loadOptions();
     }
 
+    const {
+      onMenuOpen,
+    } = this.props;
+
     if (onMenuOpen) {
-      onMenuOpen.call(this);
+      onMenuOpen();
     }
   }
 
