@@ -37,6 +37,7 @@ class AsyncPaginateBase extends Component {
 
     // eslint-disable-next-line react/forbid-prop-types
     cacheUniq: PropTypes.any,
+    optionsContextCache: PropTypes.string,
 
     selectRef: PropTypes.func,
   };
@@ -54,6 +55,7 @@ class AsyncPaginateBase extends Component {
     filterOption: null,
 
     cacheUniq: null,
+    optionsContextCache: '',
 
     selectRef: Function.prototype,
   };
@@ -116,20 +118,28 @@ class AsyncPaginateBase extends Component {
 
   onMenuOpen = async () => {
     const {
+      inputValue,
+      optionsContextCache,
+    } = this.props;
+    const {
       optionsCache,
     } = this.state;
 
-    if (!optionsCache['']) {
+    console.log(`${JSON.stringify(Object.keys(optionsCache))}`)
+    if (!optionsCache[`${optionsContextCache}##${inputValue}`]) {
       await this.loadOptions();
     }
   }
 
   handleInputChange = async (search) => {
     const {
+      optionsContextCache,
+    } = this.props;
+    const {
       optionsCache,
     } = this.state;
 
-    if (!optionsCache[search]) {
+    if (!optionsCache[`${optionsContextCache}##${search}`]) {
       await this.loadOptions();
     }
   }
@@ -137,12 +147,13 @@ class AsyncPaginateBase extends Component {
   handleScrolledToBottom = async () => {
     const {
       inputValue,
+      optionsContextCache,
     } = this.props;
     const {
       optionsCache,
     } = this.state;
 
-    const currentOptions = optionsCache[inputValue];
+    const currentOptions = optionsCache[`${optionsContextCache}##${inputValue}`];
 
     if (currentOptions) {
       await this.loadOptions();
@@ -152,12 +163,13 @@ class AsyncPaginateBase extends Component {
   async loadOptions() {
     const {
       inputValue,
+      optionsContextCache,
     } = this.props;
     const {
       optionsCache,
     } = this.state;
 
-    const currentOptions = optionsCache[inputValue] || this.getInitialCache();
+    const currentOptions = optionsCache[`${optionsContextCache}##${inputValue}`] || this.getInitialCache();
 
     if (currentOptions.isLoading || !currentOptions.hasMore) {
       return;
@@ -166,7 +178,7 @@ class AsyncPaginateBase extends Component {
     await this.setState((prevState) => ({
       optionsCache: {
         ...prevState.optionsCache,
-        [inputValue]: {
+        [`${optionsContextCache}##${inputValue}`]: {
           ...currentOptions,
           isLoading: true,
         },
@@ -188,8 +200,8 @@ class AsyncPaginateBase extends Component {
         await this.setState((prevState) => ({
           optionsCache: {
             ...prevState.optionsCache,
-            [inputValue]: {
-              ...prevState.optionsCache[inputValue],
+            [`${optionsContextCache}##${inputValue}`]: {
+              ...prevState.optionsCache[`${optionsContextCache}##${inputValue}`],
               isLoading: false,
             },
           },
@@ -226,7 +238,7 @@ class AsyncPaginateBase extends Component {
       await this.setState((prevState) => ({
         optionsCache: {
           ...prevState.optionsCache,
-          [inputValue]: {
+          [`${optionsContextCache}##${inputValue}`]: {
             ...currentOptions,
             isLoading: false,
           },
@@ -242,7 +254,7 @@ class AsyncPaginateBase extends Component {
       await this.setState((prevState) => ({
         optionsCache: {
           ...prevState.optionsCache,
-          [inputValue]: {
+          [`${optionsContextCache}##${inputValue}`]: {
             ...currentOptions,
             options: reduceOptions(currentOptions.options, options, newAdditional),
             hasMore: !!hasMore,
@@ -261,6 +273,7 @@ class AsyncPaginateBase extends Component {
       components,
       SelectComponent,
       inputValue,
+      optionsContextCache,
       ...props
     } = this.props;
 
@@ -268,7 +281,7 @@ class AsyncPaginateBase extends Component {
       optionsCache,
     } = this.state;
 
-    const currentOptions = optionsCache[inputValue] || this.getInitialCache();
+    const currentOptions = optionsCache[`${optionsContextCache}##${inputValue}`] || this.getInitialCache();
 
     return (
       <SelectComponent
