@@ -1,5 +1,5 @@
 {
-  "name": "react-select-async-paginate",
+  "name": "@babylon-ai/react-select-async-paginate",
   "version": "0.3.2",
   "description": "Wrapper above react-select that supports pagination on menu scroll",
   "main": "lib/index.js",
@@ -8,8 +8,11 @@
     "/es",
     "/lib"
   ],
-  "repository": "git@github.com:vtaits/react-select-async-paginate.git",
-  "author": "Vadim Taits",
+  "repository": "git@github.com:szymonwartak/react-select-async-paginate.git",
+  "publishConfig": {
+    "registry": "https://artifactory.ops.babylontech.co.uk/artifactory/api/npm/babylon-npm/"
+  },
+  "author": "Szymon Wartak",
   "license": "MIT",
   "scripts": {
     "build": "yarn build:cjs && yarn build:es",
@@ -73,6 +76,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.3",
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "request": "^2.88.0"
   }
 }

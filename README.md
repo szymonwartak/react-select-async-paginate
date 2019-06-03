@@ -291,3 +291,12 @@ const MenuList = wrapMenuList(CustomMenuList);
   }}
 />
 ```
+
+# Contributions
+
+Login to Babylon artifactory and publish: 
+
+`npm login --registry https://artifactory.ops.babylontech.co.uk/artifactory/api/npm/babylon-npm/`
+
+`npm publish --registry https://artifactory.ops.babylontech.co.uk/artifactory/api/npm/babylon-npm/`
+ 
